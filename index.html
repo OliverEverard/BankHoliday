@@ -1,5 +1,9 @@
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<!DOCTYPE html>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="style.css">
+ 
+
 
 <script type="module">
   const { createApp } = Vue;
@@ -21,37 +25,39 @@
     },
   
     methods: {
-      isTodayBankHolidayFunc(){
-        return fetch('https://www.gov.uk/bank-holidays.json')
-          .then(response => response.json())
-          .then(data => {
-            const today = new Date();
-            this.today = today; 
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            const todayDateString = `${year}-${month}-${day}`;
-            
-            const englandAndWalesHolidays = data['england-and-wales'].events;
-            const scotlandHolidays = data['scotland'].events;
-            const northernIrelandHolidays = data['northern-ireland'].events;
-            
-            const allHolidays = [
-              ...englandAndWalesHolidays,
-              ...scotlandHolidays,
-              ...northernIrelandHolidays,
-            ];
-            
-            const isTodayHoliday = allHolidays.some(holiday => {
-              return holiday.date === todayDateString;
-            });
+  isTodayBankHolidayFunc(){
+    return fetch('https://www.gov.uk/bank-holidays.json')
+      .then(response => response.json())
+      .then(data => {
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        this.today = today.toLocaleDateString('en-GB', options);
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const todayDateString = `${year}-${month}-${day}`;
+        
+        const englandAndWalesHolidays = data['england-and-wales'].events;
+        const scotlandHolidays = data['scotland'].events;
+        const northernIrelandHolidays = data['northern-ireland'].events;
+        
+        const allHolidays = [
+          ...englandAndWalesHolidays,
+          ...scotlandHolidays,
+          ...northernIrelandHolidays,
+        ];
+        
+        const isTodayHoliday = allHolidays.some(holiday => {
+          return holiday.date === todayDateString;
+        });
 
-            if (isTodayHoliday) {
-              this.isTodayABankHoliday =  "Today is a Bank Holiday"
-            } else { this.isTodayABankHoliday = "Today is not a Bank Holiday" }
-          });
-      }, 
-  }
+        if (isTodayHoliday) {
+          this.isTodayABankHoliday =  "Today is a Bank Holiday"
+        } else { this.isTodayABankHoliday = "Today is not a Bank Holiday" }
+      });
+  }, 
+}
+
 }).mount('#app')
 
 </script>
@@ -63,41 +69,35 @@
   <title>Bank Hol?</title>
 </head>
 
-<section class="hero is-Dark">
+<section class="hero">
   <div class="hero-body">
-    <p class="title">
+    <p class="font">
       Is today a bank holiday? 
     </p>
-    <p class="subtitle">
+    <p class="font">
       Should I be at work? 
     </p>
   </div>
 </section>
 
 
-<section class="hero is-White">
-  <div class="hero-body">
-    <p class="title">
-     
-    </p>
+<section id="app">
+  <div class="box custom-box-2">
+    <div class="box custom-box">
+      <p class="font">
+        The Date Is {{ today }}
+      </p>
+    </div>
+    <div class="box custom-box"> 
+      <p class="font">
+        {{ isTodayABankHoliday }}
+      </p>
+    </div>
     <p class="subtitle">
     
     </p>
   </div>
 </section>
 
-<section class="hero is-White" id="app">
-  <div class="hero-body">
-    <p class="title">
-      The Date Is {{ today }}
-     </p>
-    <p class="title">
-     {{ isTodayABankHoliday }}
-    </p>
-    <p class="subtitle">
-    
-    </p>
-  </div>
-</section>
 
 
