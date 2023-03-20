@@ -1,0 +1,103 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+<script type="module">
+  const { createApp } = Vue;
+  let id = 0; 
+  
+  createApp({
+    data() {
+      return {
+        today: "", 
+        isTodayABankHoliday: ""
+       };
+    },
+  
+    created() {
+      this.isTodayBankHolidayFunc();
+      setInterval(() => {
+        this.isTodayBankHolidayFunc();
+      }, 5000);
+    },
+  
+    methods: {
+      isTodayBankHolidayFunc(){
+        return fetch('https://www.gov.uk/bank-holidays.json')
+          .then(response => response.json())
+          .then(data => {
+            const today = new Date();
+            this.today = today; 
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const todayDateString = `${year}-${month}-${day}`;
+            
+            const englandAndWalesHolidays = data['england-and-wales'].events;
+            const scotlandHolidays = data['scotland'].events;
+            const northernIrelandHolidays = data['northern-ireland'].events;
+            
+            const allHolidays = [
+              ...englandAndWalesHolidays,
+              ...scotlandHolidays,
+              ...northernIrelandHolidays,
+            ];
+            
+            const isTodayHoliday = allHolidays.some(holiday => {
+              return holiday.date === todayDateString;
+            });
+
+            if (isTodayHoliday) {
+              this.isTodayABankHoliday =  "Today is a Bank Holiday"
+            } else { this.isTodayABankHoliday = "Today is not a Bank Holiday" }
+          });
+      }, 
+  }
+}).mount('#app')
+
+</script>
+
+
+<!-- HTML -->
+<!--------------------------------------------------------------------------------------------------------------------------------->
+<head>
+  <title>Bank Hol?</title>
+</head>
+
+<section class="hero is-Dark">
+  <div class="hero-body">
+    <p class="title">
+      Is today a bank holiday? 
+    </p>
+    <p class="subtitle">
+      Should I be at work? 
+    </p>
+  </div>
+</section>
+
+
+<section class="hero is-White">
+  <div class="hero-body">
+    <p class="title">
+     
+    </p>
+    <p class="subtitle">
+    
+    </p>
+  </div>
+</section>
+
+<section class="hero is-White" id="app">
+  <div class="hero-body">
+    <p class="title">
+      The Date Is {{ today }}
+     </p>
+    <p class="title">
+     {{ isTodayABankHoliday }}
+    </p>
+    <p class="subtitle">
+    
+    </p>
+  </div>
+</section>
+
+
