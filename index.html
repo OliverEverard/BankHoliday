@@ -1,8 +1,25 @@
 <!DOCTYPE html>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <link rel="stylesheet" href="style.css">
-   <script src="https://cdn.tailwindcss.com"></script>
+<html>
+  <head>
+    <title>Oli Everard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8368997072131126"
+     crossorigin="anonymous"></script>
+     <link rel="icon" type="image/x-icon" href="/src/favicon.ico">
+     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body class="bg-white">
+    <div id="navbar-container"></div>
+
+    <script>
+
+      fetch('https://www.olieverard.co.uk/components/navbar.html')
+        .then(response => response.text())
+        .then(html => {
+          document.querySelector('#navbar-container').innerHTML = html;
+        });
+    </script>
 
 <script type="module">
   const { createApp } = Vue;
@@ -64,41 +81,19 @@
 
 <!-- HTML -->
 <!--------------------------------------------------------------------------------------------------------------------------------->
-<head>
-  <title>Bank Hol?</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8368997072131126"
-     crossorigin="anonymous"></script>
-</head>
 
-<section class="hero">
-  <div class="hero-body">
-    <p class="font">
-      Is today a bank holiday? 
-    </p>
-    <p class="font">
-      Should I be at work? 
-    </p>
+<section id ="app" class="text-gray-600 body-font">
+  <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+    <div class="text-center lg:w-2/3 w-full">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">The Date Is {{ today }}</h1>
+      <p class="mb-8 leading-relaxed text-blue-500 font-medium text-xl">{{ isTodayABankHoliday }}</p>
+      <div class="flex justify-center">
+      </div>
+    </div>
   </div>
 </section>
+    </body>
 
-
-<section id="app">
-  <div class="box custom-box-2">
-    <div class="box custom-box">
-      <p class="font">
-        The Date Is {{ today }}
-      </p>
-    </div>
-    <div class="box custom-box"> 
-      <p class="font">
-        {{ isTodayABankHoliday }}
-      </p>
-    </div>
-    <p class="subtitle">
-    
-    </p>
-  </div>
-</section>
 
 
 
